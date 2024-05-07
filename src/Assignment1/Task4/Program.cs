@@ -4,7 +4,7 @@
     {
         return false;
     }
-   else if (n == 2)
+    else if (n == 2)
     {
         return true;
     }
@@ -17,7 +17,7 @@
     }
     return true;
 }
-while(true)
+while (true)
 {
     String str = Console.ReadLine();
     int num = int.Parse(str);

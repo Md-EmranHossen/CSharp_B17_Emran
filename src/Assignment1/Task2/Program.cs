@@ -11,19 +11,24 @@ int[] numbers = new int[nums.Length];
 for (int i = 0; i < nums.Length; i++)
 {
     numbers[i] = int.Parse(nums[i]);
-
 }
 
-for (int i = 0; i < numbers.Length; i++)
+for (int i = 0; i < numbers.Length - 1; i++)
 {
-    for (int j = i + 1; j < numbers.Length; j++)
+    bool flag = false;
+    for (int j = 0; j < numbers.Length - 1 - i; j++)
     {
-        if (numbers[i] <= numbers[j])
+        if (numbers[j] < numbers[j + 1])
         {
-            numbers[i] = numbers[i] ^ numbers[j];
-            numbers[j] = numbers[i] ^ numbers[j];
-            numbers[i] = numbers[i] ^ numbers[j];
+            numbers[j] = numbers[j] ^ numbers[j + 1];
+            numbers[j + 1] = numbers[j] ^ numbers[j + 1];
+            numbers[j] = numbers[j] ^ numbers[j + 1];
+            flag = true;
         }
+    }
+    if (flag == false)
+    {
+        break;
     }
 }
 for (int i = 0; i < numbers.Length; i++)

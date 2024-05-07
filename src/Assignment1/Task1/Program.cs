@@ -8,21 +8,21 @@ for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++)
     {
         arr[i, j] = int.Parse(input[j]);
-       
+
     }
 }
 int sum1 = 0;
 int sum2 = 0;
 int l = n - 1;
 for (int i = 0; i < n; i++)
-{   
+{
     for (int j = 0; j < n; j++)
     {
-       if (i == j)
+        if (i == j)
         {
             sum1 += arr[i, j];
         }
-       if (j == l)
+        if (j == l)
         {
             sum2 += arr[i, j];
         }
