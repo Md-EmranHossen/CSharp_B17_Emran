@@ -1,2 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Task2;
+
+Lock key = new Lock();
+
+key.LockStatus = "Others";
+Console.WriteLine(key.LockStatus);
+
+key.LockStatus = "Open";
+Console.WriteLine(key.LockStatus);
