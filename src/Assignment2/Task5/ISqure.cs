@@ -8,5 +8,7 @@ namespace Task5
 {
     internal interface ISqure
     {
+        double Side { get; }
+        double CalculateArea();
     }
 }
