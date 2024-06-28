@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Task5
 {
-    internal interface ICircle
+    internal interface IShape
     {
-        double Radius { get; }
-       
         double CalculateArea();
     }
 }
