@@ -6,25 +6,30 @@ using System.Threading.Tasks;
 
 namespace Task6
 {
-    public class SystemDate
+    public static  class SystemDate
     {
-        private int _counter;
+        private static int _counter;
 
-        public SystemDate()
+        static SystemDate()
         {
             _counter = 0;
         }
 
-        public DateTime GetCurrentDate()
+        public static DateTime GetCurrentDate()
         {
             _counter++;
             return DateTime.Now;
         }
 
-        public DateTime GetCurrentUtcDate()
+        public static DateTime GetCurrentUtcDate()
         {
             _counter++;
             return DateTime.UtcNow;
+        }
+
+        public static void DisplayCounter()
+        {
+            Console.WriteLine(_counter);
         }
     }
 }
