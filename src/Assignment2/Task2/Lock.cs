@@ -14,7 +14,7 @@ namespace Task2 {
     {
       get 
       {
-        if (lockStatus == "Open" || lockStatus == "Close") 
+        if (lockStatus == "Open" || lockStatus == "Close") //Need Correction
         {
           return lockStatus;
         } 
