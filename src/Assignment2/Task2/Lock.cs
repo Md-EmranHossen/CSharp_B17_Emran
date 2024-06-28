@@ -4,30 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task2 {
-  public class Lock 
-  {
-    private string lockStatus; // Correct lock status are: Open & Close
-
-    
-    public string LockStatus 
+namespace Task2
+{
+    public class Lock
     {
-      get 
-      {
-        if (lockStatus == "Open" || lockStatus == "Close") //Need Correction
+        private string lockStatus;
+        public string LockStatus
         {
-          return lockStatus;
-        } 
-        else 
-        {
-          lockStatus = "Incorrect Status";
-          return lockStatus;
+            get { return lockStatus; }
+            set 
+            { 
+                if (value == "Open" || value == "Close")
+                {
+                    lockStatus = value;
+                }
+                else
+                {
+                    lockStatus = "Incorrect Status";
+                }
+            }
         }
-      }
-      set 
-      {
-        lockStatus = value;
-      }
     }
-  }
 }
