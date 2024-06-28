@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Task5
 {
-    public class Circle
+    public class Circle : ICircle
     {
         public double Radius { get; private set; }
 
