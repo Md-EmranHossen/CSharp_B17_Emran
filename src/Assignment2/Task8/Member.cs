@@ -8,13 +8,15 @@ namespace Task8
 {
     public class Member
     {
-        public string membershipId;
+        protected string membershipId;
         public string Name { get; set; }
         public DateTime MembershipExpirationDate { get; set; }
 
         public Member()
         {
             membershipId = Guid.NewGuid().ToString();
-        }
+        } 
     }
 }
+
+

@@ -1,2 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Task8;
+
+Member member = new Member();
+member.Name = "Emran Hossen";
+member.MembershipExpirationDate = new DateTime(2027, 4, 23, 14, 30, 0); 
+
+VIPMember vIPMember = new VIPMember();
