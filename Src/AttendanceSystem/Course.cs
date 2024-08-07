@@ -12,7 +12,9 @@ namespace AttendanceSystem
         public string Name { get; set; }
         public decimal Fees { get; set; }
 
+        public int? TeacherId { get; set; } 
         public Teacher Teacher { get; set; }
+
         public List<Student> Students { get; set; } = new List<Student>();
         public List<Schedule> Schedules { get; set; } = new List<Schedule>();
     }

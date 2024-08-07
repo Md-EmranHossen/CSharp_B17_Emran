@@ -116,11 +116,22 @@ static void CreateCourse(AttendanceDbContext dbContext)
     Console.Write("Enter course fees: ");
     var fees = decimal.Parse(Console.ReadLine());
 
-    var course = new Course { Name = name, Fees = fees };
+    Console.Write("Enter teacher username: ");
+    var username = Console.ReadLine();
+    var teacher = dbContext.Teachers.FirstOrDefault(t => t.Username == username);
+    if (teacher == null)
+    {
+        Console.WriteLine("Teacher not found.");
+        return;
+    }
+
+    var course = new Course { Name = name, Fees = fees, Teacher = teacher };
     dbContext.Courses.Add(course);
     dbContext.SaveChanges();
     Console.WriteLine("Course created successfully.");
 }
+
+
 
 static void AssignTeacherToCourse(AttendanceDbContext dbContext)
 {

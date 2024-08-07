@@ -13,7 +13,8 @@ namespace AttendanceSystem
 
         public AttendanceDbContext()
         {
-            _connectionString = "Server=ASUSEXPARTBOOK\\SQLEXPRESS;Database=CSharpB17;User Id=csharpb17;Password=123456;Trust Server Certificate=True";
+            _connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=CSharpB16;User ID=csharpb17; Password=123456;TrustServerCertificate=True;";
+
         }
 
         public DbSet<Admin> Admins { get; set; }
@@ -36,9 +37,16 @@ namespace AttendanceSystem
             modelBuilder.Entity<Schedule>().ToTable("Schedules");
             modelBuilder.Entity<Attendance>().ToTable("Attendances");
 
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Teacher)
+                .WithMany(t => t.Courses)
+                .HasForeignKey(c => c.TeacherId)
+                .OnDelete(DeleteBehavior.SetNull); 
+
             modelBuilder.Entity<Admin>().HasData(
                 new Admin { Id = 1, Name = "Admin", Username = "admin", Password = "admin" }
             );
+
 
             base.OnModelCreating(modelBuilder);
         }
