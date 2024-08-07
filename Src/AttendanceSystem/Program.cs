@@ -251,7 +251,7 @@ static void ViewAttendanceReport(AttendanceDbContext dbContext, Teacher teacher)
                 var attendance = dbContext.Attendances.FirstOrDefault(a =>
                     a.Student.Id == student.Id &&
                     a.Course.Id == course.Id &&
-                    a.Date.DayOfWeek == schedule.Day); // Compare DayOfWeek
+                    a.Date.DayOfWeek == schedule.Day); 
                 Console.Write(attendance != null && attendance.IsPresent ? "[✓]" : "[✗]");
             }
             Console.WriteLine();
