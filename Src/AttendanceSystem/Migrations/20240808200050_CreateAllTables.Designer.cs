@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AttendanceSystem.Migrations
 {
     [DbContext(typeof(AttendanceDbContext))]
-    [Migration("20240808183141_SeedDefaultAdmin")]
-    partial class SeedDefaultAdmin
+    [Migration("20240808200050_CreateAllTables")]
+    partial class CreateAllTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -63,7 +63,7 @@ namespace AttendanceSystem.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fees = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Fees = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     TeacherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -150,6 +150,11 @@ namespace AttendanceSystem.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Admins",
+                columns: new[] { "Id", "Name", "Password", "Username" },
+                values: new object[] { 1, "Default Admin", "admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_CourseId",

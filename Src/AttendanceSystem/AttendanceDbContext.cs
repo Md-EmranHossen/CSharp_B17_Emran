@@ -4,16 +4,19 @@ namespace AttendanceSystem
 {
     public class AttendanceDbContext : DbContext
     {
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
-        public DbSet<Attendance> Attendances { get; set; }
+        private readonly string _connectionString;
+
+        public AttendanceDbContext()
+        {
+            _connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=CSharpB17;User ID=csharpb17;Password=123456;TrustServerCertificate=True;";
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=CSharpB17;User ID=csharpb17;Password=123456;TrustServerCertificate=True;");
+            if (!optionsBuilder.IsConfigured)
+                optionsBuilder.UseSqlServer(_connectionString);
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,7 +26,6 @@ namespace AttendanceSystem
                 .WithMany(s => s.Courses)
                 .UsingEntity(j => j.ToTable("CourseStudents"));
 
-           
             modelBuilder.Entity<Course>()
                 .HasMany(c => c.Schedules)
                 .WithOne(s => s.Course)
@@ -39,29 +41,35 @@ namespace AttendanceSystem
                 .WithOne(a => a.Student)
                 .HasForeignKey(a => a.StudentId);
 
-           
             modelBuilder.Entity<Course>()
                 .Property(c => c.Fees)
                 .HasPrecision(18, 2);
 
-         
             modelBuilder.Entity<Admin>().HasData(
                 new Admin
                 {
                     Id = 1,
                     Name = "Default Admin",
                     Username = "admin",
-                    Password = "admin" 
+                    Password = "admin"
                 }
             );
 
-           
             modelBuilder.Entity<Admin>().ToTable("Admins");
             modelBuilder.Entity<Teacher>().ToTable("Teachers");
             modelBuilder.Entity<Student>().ToTable("Students");
             modelBuilder.Entity<Course>().ToTable("Courses");
             modelBuilder.Entity<Schedule>().ToTable("Schedules");
             modelBuilder.Entity<Attendance>().ToTable("Attendances");
+
+            base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
     }
 }
