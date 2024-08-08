@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem", "AttendanceSystem\AttendanceSystem.csproj", "{CCBE73BD-7991-4ECE-877E-C655D7D7EDDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystem", "AttendanceSystem\AttendanceSystem.csproj", "{FCA667B9-7BD8-450B-B234-D3A1CEF18DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CCBE73BD-7991-4ECE-877E-C655D7D7EDDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCBE73BD-7991-4ECE-877E-C655D7D7EDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCBE73BD-7991-4ECE-877E-C655D7D7EDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCBE73BD-7991-4ECE-877E-C655D7D7EDDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCA667B9-7BD8-450B-B234-D3A1CEF18DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA667B9-7BD8-450B-B234-D3A1CEF18DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA667B9-7BD8-450B-B234-D3A1CEF18DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA667B9-7BD8-450B-B234-D3A1CEF18DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DBA52399-2AFC-4E0B-B61A-637226ADAC62}
+		SolutionGuid = {9896E0C8-1745-45A2-92BB-392B84B7B86C}
 	EndGlobalSection
 EndGlobal

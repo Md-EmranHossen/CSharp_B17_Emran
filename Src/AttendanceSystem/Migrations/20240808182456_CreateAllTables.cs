@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AttendanceSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateTables : Migration
+    public partial class CreateAllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,7 +64,7 @@ namespace AttendanceSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fees = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TeacherId = table.Column<int>(type: "int", nullable: true)
+                    TeacherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace AttendanceSystem.Migrations
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,8 +85,8 @@ namespace AttendanceSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsPresent = table.Column<bool>(type: "bit", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: false)
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,23 +106,23 @@ namespace AttendanceSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseStudent",
+                name: "CourseStudents",
                 columns: table => new
                 {
-                    EnrolledCoursesId = table.Column<int>(type: "int", nullable: false),
+                    CoursesId = table.Column<int>(type: "int", nullable: false),
                     StudentsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseStudent", x => new { x.EnrolledCoursesId, x.StudentsId });
+                    table.PrimaryKey("PK_CourseStudents", x => new { x.CoursesId, x.StudentsId });
                     table.ForeignKey(
-                        name: "FK_CourseStudent_Courses_EnrolledCoursesId",
-                        column: x => x.EnrolledCoursesId,
+                        name: "FK_CourseStudents_Courses_CoursesId",
+                        column: x => x.CoursesId,
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseStudent_Students_StudentsId",
+                        name: "FK_CourseStudents_Students_StudentsId",
                         column: x => x.StudentsId,
                         principalTable: "Students",
                         principalColumn: "Id",
@@ -151,11 +151,6 @@ namespace AttendanceSystem.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Admins",
-                columns: new[] { "Id", "Name", "Password", "Username" },
-                values: new object[] { 1, "Admin", "admin", "admin" });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_CourseId",
                 table: "Attendances",
@@ -172,8 +167,8 @@ namespace AttendanceSystem.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseStudent_StudentsId",
-                table: "CourseStudent",
+                name: "IX_CourseStudents_StudentsId",
+                table: "CourseStudents",
                 column: "StudentsId");
 
             migrationBuilder.CreateIndex(
@@ -192,7 +187,7 @@ namespace AttendanceSystem.Migrations
                 name: "Attendances");
 
             migrationBuilder.DropTable(
-                name: "CourseStudent");
+                name: "CourseStudents");
 
             migrationBuilder.DropTable(
                 name: "Schedules");

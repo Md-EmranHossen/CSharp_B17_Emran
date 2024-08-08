@@ -1,8 +1,11 @@
 ﻿using AttendanceSystem;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 
 var dbContext = new AttendanceDbContext();
 dbContext.Database.Migrate();
+Console.WriteLine("*** Welcome To Attendance System ***");
 
 Console.Write("Enter username: ");
 var username = Console.ReadLine();
@@ -35,7 +38,7 @@ else
     }
 }
 
-static void HandleAdmin(AttendanceDbContext dbContext, Admin admin)
+void HandleAdmin(AttendanceDbContext dbContext, Admin admin)
 {
     while (true)
     {
@@ -79,142 +82,7 @@ static void HandleAdmin(AttendanceDbContext dbContext, Admin admin)
     }
 }
 
-static void CreateTeacher(AttendanceDbContext dbContext)
-{
-    Console.Write("Enter teacher name: ");
-    var name = Console.ReadLine();
-    Console.Write("Enter username: ");
-    var username = Console.ReadLine();
-    Console.Write("Enter password: ");
-    var password = Console.ReadLine();
-
-    var teacher = new Teacher { Name = name, Username = username, Password = password };
-    dbContext.Teachers.Add(teacher);
-    dbContext.SaveChanges();
-    Console.WriteLine("Teacher created successfully.");
-}
-
-static void CreateStudent(AttendanceDbContext dbContext)
-{
-    Console.Write("Enter student name: ");
-    var name = Console.ReadLine();
-    Console.Write("Enter username: ");
-    var username = Console.ReadLine();
-    Console.Write("Enter password: ");
-    var password = Console.ReadLine();
-
-    var student = new Student { Name = name, Username = username, Password = password };
-    dbContext.Students.Add(student);
-    dbContext.SaveChanges();
-    Console.WriteLine("Student created successfully.");
-}
-
-static void CreateCourse(AttendanceDbContext dbContext)
-{
-    Console.Write("Enter course name: ");
-    var name = Console.ReadLine();
-    Console.Write("Enter course fees: ");
-    var fees = decimal.Parse(Console.ReadLine());
-
-    Console.Write("Enter teacher username: ");
-    var username = Console.ReadLine();
-    var teacher = dbContext.Teachers.FirstOrDefault(t => t.Username == username);
-    if (teacher == null)
-    {
-        Console.WriteLine("Teacher not found.");
-        return;
-    }
-
-    var course = new Course { Name = name, Fees = fees, Teacher = teacher };
-    dbContext.Courses.Add(course);
-    dbContext.SaveChanges();
-    Console.WriteLine("Course created successfully.");
-}
-
-
-
-static void AssignTeacherToCourse(AttendanceDbContext dbContext)
-{
-    Console.Write("Enter teacher username: ");
-    var username = Console.ReadLine();
-    var teacher = dbContext.Teachers.FirstOrDefault(t => t.Username == username);
-    if (teacher == null)
-    {
-        Console.WriteLine("Teacher not found.");
-        return;
-    }
-
-    Console.Write("Enter course name: ");
-    var courseName = Console.ReadLine();
-    var course = dbContext.Courses.FirstOrDefault(c => c.Name == courseName);
-    if (course == null)
-    {
-        Console.WriteLine("Course not found.");
-        return;
-    }
-
-    teacher.Courses.Add(course);
-    dbContext.SaveChanges();
-    Console.WriteLine("Teacher assigned to course successfully.");
-}
-
-static void AssignStudentToCourse(AttendanceDbContext dbContext)
-{
-    Console.Write("Enter student username: ");
-    var username = Console.ReadLine();
-    var student = dbContext.Students.FirstOrDefault(s => s.Username == username);
-    if (student == null)
-    {
-        Console.WriteLine("Student not found.");
-        return;
-    }
-
-    Console.Write("Enter course name: ");
-    var courseName = Console.ReadLine();
-    var course = dbContext.Courses.FirstOrDefault(c => c.Name == courseName);
-    if (course == null)
-    {
-        Console.WriteLine("Course not found.");
-        return;
-    }
-
-    student.EnrolledCourses.Add(course);
-    dbContext.SaveChanges();
-    Console.WriteLine("Student assigned to course successfully.");
-}
-
-static void SetClassSchedule(AttendanceDbContext dbContext)
-{
-    Console.Write("Enter course name: ");
-    var courseName = Console.ReadLine();
-    var course = dbContext.Courses.FirstOrDefault(c => c.Name == courseName);
-    if (course == null)
-    {
-        Console.WriteLine("Course not found.");
-        return;
-    }
-
-    Console.Write("Enter day (e.g., Sunday, Monday, etc.): ");
-    var dayInput = Console.ReadLine();
-    DayOfWeek day;
-    if (!Enum.TryParse(dayInput, true, out day))
-    {
-        Console.WriteLine("Invalid day entered.");
-        return;
-    }
-
-    Console.Write("Enter time: ");
-    var time = Console.ReadLine();
-    Console.Write("Enter total number of classes: ");
-    var totalClasses = int.Parse(Console.ReadLine());
-
-    var schedule = new Schedule { Course = course, Day = day, Time = time, TotalClasses = totalClasses };
-    course.Schedules.Add(schedule);
-    dbContext.SaveChanges();
-    Console.WriteLine("Class schedule set successfully.");
-}
-
-static void HandleTeacher(AttendanceDbContext dbContext, Teacher teacher)
+void HandleTeacher(AttendanceDbContext dbContext, Teacher teacher)
 {
     while (true)
     {
@@ -238,28 +106,7 @@ static void HandleTeacher(AttendanceDbContext dbContext, Teacher teacher)
     }
 }
 
-static void ViewAttendanceReport(AttendanceDbContext dbContext, Teacher teacher)
-{
-    foreach (var course in teacher.Courses)
-    {
-        Console.WriteLine($"Attendance report for {course.Name}:");
-        foreach (var student in course.Students)
-        {
-            Console.Write($"{student.Name}: ");
-            foreach (var schedule in course.Schedules)
-            {
-                var attendance = dbContext.Attendances.FirstOrDefault(a =>
-                    a.Student.Id == student.Id &&
-                    a.Course.Id == course.Id &&
-                    a.Date.DayOfWeek == schedule.Day); 
-                Console.Write(attendance != null && attendance.IsPresent ? "[✓]" : "[✗]");
-            }
-            Console.WriteLine();
-        }
-    }
-}
-
-static void HandleStudent(AttendanceDbContext dbContext, Student student)
+void HandleStudent(AttendanceDbContext dbContext, Student student)
 {
     while (true)
     {
@@ -283,39 +130,221 @@ static void HandleStudent(AttendanceDbContext dbContext, Student student)
     }
 }
 
-static void GiveAttendance(AttendanceDbContext dbContext, Student student)
+void CreateTeacher(AttendanceDbContext dbContext)
+{
+    Console.Write("Enter teacher name: ");
+    var name = Console.ReadLine();
+    Console.Write("Enter username: ");
+    var username = Console.ReadLine();
+    Console.Write("Enter password: ");
+    var password = Console.ReadLine();
+
+    var teacher = new Teacher { Name = name, Username = username, Password = password };
+    dbContext.Teachers.Add(teacher);
+    dbContext.SaveChanges();
+    Console.WriteLine("Teacher created successfully.");
+}
+
+void CreateStudent(AttendanceDbContext dbContext)
+{
+    Console.Write("Enter student name: ");
+    var name = Console.ReadLine();
+    Console.Write("Enter username: ");
+    var username = Console.ReadLine();
+    Console.Write("Enter password: ");
+    var password = Console.ReadLine();
+
+    var student = new Student { Name = name, Username = username, Password = password };
+    dbContext.Students.Add(student);
+    dbContext.SaveChanges();
+    Console.WriteLine("Student created successfully.");
+}
+
+void CreateCourse(AttendanceDbContext dbContext)
 {
     Console.Write("Enter course name: ");
+    var name = Console.ReadLine();
+    Console.Write("Enter course fees: ");
+    var fees = decimal.Parse(Console.ReadLine());
+
+    Console.Write("Enter teacher username: ");
+    var username = Console.ReadLine();
+    var teacher = dbContext.Teachers.FirstOrDefault(t => t.Username == username);
+    if (teacher == null)
+    {
+        Console.WriteLine("Teacher not found.");
+        return;
+    }
+
+    var course = new Course { Name = name, Fees = fees, Teacher = teacher };
+    dbContext.Courses.Add(course);
+    dbContext.SaveChanges();
+    Console.WriteLine("Course created successfully.");
+}
+
+void AssignTeacherToCourse(AttendanceDbContext dbContext)
+{
+    Console.Write("Enter teacher username: ");
+    var username = Console.ReadLine();
+    var teacher = dbContext.Teachers.FirstOrDefault(t => t.Username == username);
+    if (teacher == null)
+    {
+        Console.WriteLine("Teacher not found.");
+        return;
+    }
+
+    Console.Write("Enter course name: ");
     var courseName = Console.ReadLine();
-    var course = student.EnrolledCourses.FirstOrDefault(c => c.Name == courseName);
+    var course = dbContext.Courses.FirstOrDefault(c => c.Name == courseName);
     if (course == null)
     {
         Console.WriteLine("Course not found.");
         return;
     }
 
-    Console.Write("Enter class day (e.g., Sunday, Monday): ");
-    var dayInput = Console.ReadLine();
-    DayOfWeek day;
-    if (!Enum.TryParse(dayInput, true, out day))
+    course.Teacher = teacher;
+    course.TeacherId = teacher.Id;
+    dbContext.SaveChanges();
+    Console.WriteLine("Teacher assigned to course successfully.");
+}
+
+void AssignStudentToCourse(AttendanceDbContext dbContext)
+{
+    Console.Write("Enter student username: ");
+    var username = Console.ReadLine();
+    var student = dbContext.Students.FirstOrDefault(s => s.Username == username);
+    if (student == null)
     {
-        Console.WriteLine("Invalid day entered.");
+        Console.WriteLine("Student not found.");
         return;
     }
 
-    var schedule = course.Schedules.FirstOrDefault(s => s.Day == day);
-    if (schedule == null)
+    Console.Write("Enter course name: ");
+    var courseName = Console.ReadLine();
+    var course = dbContext.Courses.FirstOrDefault(c => c.Name == courseName);
+    if (course == null)
     {
-        Console.WriteLine("Class schedule not found for this day.");
+        Console.WriteLine("Course not found.");
         return;
     }
+
+    if (course.Students.Contains(student))
+    {
+        Console.WriteLine("Student already enrolled in this course.");
+        return;
+    }
+
+    course.Students.Add(student);
+    dbContext.SaveChanges();
+    Console.WriteLine("Student assigned to course successfully.");
+}
+
+void SetClassSchedule(AttendanceDbContext dbContext)
+{
+    Console.Write("Enter course name: ");
+    var courseName = Console.ReadLine();
+    var course = dbContext.Courses.FirstOrDefault(c => c.Name == courseName);
+    if (course == null)
+    {
+        Console.WriteLine("Course not found.");
+        return;
+    }
+
+    Console.Write("Enter day of week (e.g., Sunday): ");
+    var day = Enum.Parse<DayOfWeek>(Console.ReadLine(), true);
+    Console.Write("Enter class time (e.g., 8PM - 10PM): ");
+    var time = Console.ReadLine();
+    Console.Write("Enter total number of classes: ");
+    var totalClasses = int.Parse(Console.ReadLine());
+
+    var schedule = new Schedule
+    {
+        Day = day,
+        Time = time,
+        TotalClasses = totalClasses,
+        Course = course
+    };
+    dbContext.Schedules.Add(schedule);
+    dbContext.SaveChanges();
+    Console.WriteLine("Class schedule set successfully.");
+}
+
+void ViewAttendanceReport(AttendanceDbContext dbContext, Teacher teacher)
+{
+    Console.Write("Enter course name: ");
+    var courseName = Console.ReadLine();
+    var course = dbContext.Courses
+        .Include(c => c.Students)
+        .Include(c => c.Attendances) 
+        .ThenInclude(a => a.Student)
+        .FirstOrDefault(c => c.Name == courseName);
+    if (course == null)
+    {
+        Console.WriteLine("Course not found.");
+        return;
+    }
+
+    var students = course.Students;
+    Console.WriteLine($"Attendance Report for {courseName}");
+    foreach (var student in students)
+    {
+        Console.Write($"{student.Name}: ");
+        var studentAttendances = course.Attendances
+            .Where(a => a.StudentId == student.Id)
+            .ToList();
+        foreach (var schedule in course.Schedules)
+        {
+            var attendance = studentAttendances
+                .FirstOrDefault(a => a.Date.DayOfWeek == schedule.Day);
+            if (attendance != null && attendance.IsPresent)
+            {
+                Console.Write("✔ ");
+            }
+            else
+            {
+                Console.Write("✘ ");
+            }
+        }
+        Console.WriteLine();
+    }
+}
+
+
+void GiveAttendance(AttendanceDbContext dbContext, Student student)
+{
+    var enrolledCourses = dbContext.Courses.Where(c => c.Students.Contains(student)).ToList();
+    if (!enrolledCourses.Any())
+    {
+        Console.WriteLine("You are not enrolled in any courses.");
+        return;
+    }
+
+    Console.WriteLine("Your enrolled courses:");
+    for (int i = 0; i < enrolledCourses.Count; i++)
+    {
+        Console.WriteLine($"{i + 1}. {enrolledCourses[i].Name}");
+    }
+
+    Console.Write("Select course number: ");
+    int courseIndex = int.Parse(Console.ReadLine()) - 1;
+    if (courseIndex < 0 || courseIndex >= enrolledCourses.Count)
+    {
+        Console.WriteLine("Invalid selection.");
+        return;
+    }
+
+    var course = enrolledCourses[courseIndex];
+    Console.Write("Enter class day (e.g., Sunday): ");
+    var day = Enum.Parse<DayOfWeek>(Console.ReadLine(), true);
+    Console.Write("Enter class time (e.g., 8PM - 10PM): ");
+    var time = Console.ReadLine();
 
     var attendance = new Attendance
     {
-        Date = DateTime.Now,
-        IsPresent = true,
+        Student = student,
         Course = course,
-        Student = student
+        Date = DateTime.Now,
+        IsPresent = true
     };
 
     dbContext.Attendances.Add(attendance);

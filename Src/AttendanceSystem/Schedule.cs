@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace AttendanceSystem
 {
-    public class Schedule
+   
+   public class Schedule
     {
         public int Id { get; set; }
         public DayOfWeek Day { get; set; }
         public string Time { get; set; }
         public int TotalClasses { get; set; }
-
+        public int CourseId { get; set; }
         public Course Course { get; set; }
     }
+
+
+
 }

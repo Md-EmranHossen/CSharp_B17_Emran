@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AttendanceSystem.Migrations
 {
     [DbContext(typeof(AttendanceDbContext))]
-    [Migration("20240807063745_CreateTables")]
-    partial class CreateTables
+    [Migration("20240808183141_SeedDefaultAdmin")]
+    partial class SeedDefaultAdmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,13 +47,13 @@ namespace AttendanceSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Name = "Admin",
+                            Name = "Default Admin",
                             Password = "admin",
                             Username = "admin"
                         });
@@ -97,20 +97,21 @@ namespace AttendanceSystem.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Fees")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TeacherId")
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("AttendanceSystem.Schedule", b =>
@@ -163,7 +164,7 @@ namespace AttendanceSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("AttendanceSystem.Teacher", b =>
@@ -188,34 +189,34 @@ namespace AttendanceSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("CourseStudent", b =>
                 {
-                    b.Property<int>("EnrolledCoursesId")
+                    b.Property<int>("CoursesId")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentsId")
                         .HasColumnType("int");
 
-                    b.HasKey("EnrolledCoursesId", "StudentsId");
+                    b.HasKey("CoursesId", "StudentsId");
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("CourseStudent");
+                    b.ToTable("CourseStudents", (string)null);
                 });
 
             modelBuilder.Entity("AttendanceSystem.Attendance", b =>
                 {
                     b.HasOne("AttendanceSystem.Course", "Course")
-                        .WithMany()
+                        .WithMany("Attendances")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AttendanceSystem.Student", "Student")
-                        .WithMany()
+                        .WithMany("Attendances")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -230,7 +231,8 @@ namespace AttendanceSystem.Migrations
                     b.HasOne("AttendanceSystem.Teacher", "Teacher")
                         .WithMany("Courses")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -250,7 +252,7 @@ namespace AttendanceSystem.Migrations
                 {
                     b.HasOne("AttendanceSystem.Course", null)
                         .WithMany()
-                        .HasForeignKey("EnrolledCoursesId")
+                        .HasForeignKey("CoursesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -263,7 +265,14 @@ namespace AttendanceSystem.Migrations
 
             modelBuilder.Entity("AttendanceSystem.Course", b =>
                 {
+                    b.Navigation("Attendances");
+
                     b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("AttendanceSystem.Student", b =>
+                {
+                    b.Navigation("Attendances");
                 });
 
             modelBuilder.Entity("AttendanceSystem.Teacher", b =>

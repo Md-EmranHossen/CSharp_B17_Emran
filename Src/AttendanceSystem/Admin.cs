@@ -14,5 +14,3 @@ namespace AttendanceSystem
         public string Password { get; set; }
     }
 }
-
-

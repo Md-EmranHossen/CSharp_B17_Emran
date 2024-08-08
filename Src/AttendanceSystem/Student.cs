@@ -12,7 +12,10 @@ namespace AttendanceSystem
         public string Name { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-
-        public List<Course> EnrolledCourses { get; set; } = new List<Course>();
+        public List<Course> Courses { get; set; } = new List<Course>();
+        public List<Attendance> Attendances { get; set; } = new List<Attendance>();
     }
+
+
+
 }
